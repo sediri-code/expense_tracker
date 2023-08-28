@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+      padding: 5px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .debt-paid {
+      text-decoration: line-through;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <h1>Expense Tracker</h1>
+
+  <h2>Spending and Earning</h2>
+  <table id="expensesTable">
+    <tr>
+      <th>Date</th>
+      <th>Spent</th>
+      <th>Earned</th>
+      <th>PROFIT</th>
+    </tr>
+    <tr>
+      <td><input type="date" id="dateInput"></td>
+      <td><input type="number" id="spentInput"></td>
+      <td><input type="number" id="earnedInput"></td>
+      <td><input type="number" id="differenceInput" readonly></td>
+      <td><button onclick="addExpense()">Add</button></td>
+    </tr>
+  </table>
+
+  <h2>Debts</h2>
+  <table id="debtsTable">
+    <tr>
+      <th>Date</th>
+      <th>Debt Amount</th>
+      <th>Status</th>
+    </tr>
+    <tr>
+      <td><input type="date" id="debtDateInput"></td>
+      <td><input type="number" id="debtAmountInput"></td>
+      <td><button onclick="addDebt()">Add</button></td>
+    </tr>
+  </table>
+
+  <script>
+    // Track spending and earning
+    function addExpense() {
+      var date = document.getElementById("dateInput").value;
+      var spent = parseFloat(document.getElementById("spentInput").value);
+      var earned = parseFloat(document.getElementById("earnedInput").value);
+      var difference = earned - spent;
+
+      var table = document.getElementById("expensesTable");
+      var row = table.insertRow(-1);
+      var dateCell = row.insertCell(0);
+      var spentCell = row.insertCell(1);
+      var earnedCell = row.insertCell(2);
+      var differenceCell = row.insertCell(3);
+
+      dateCell.innerHTML = date;
+      spentCell.innerHTML = spent;
+      earnedCell.innerHTML = earned;
+      differenceCell.innerHTML = difference;
+
+      document.getElementById("spentInput").value = "";
+      document.getElementById("earnedInput").value = "";
+      document.getElementById("differenceInput").value = "";
+    }
+
+    // Manage debts
+    function addDebt() {
+      var date = document.getElementById("debtDateInput").value;
+      var amount = parseFloat(document.getElementById("debtAmountInput").value);
+
+      var table = document.getElementById("debtsTable");
+      var row = table.insertRow(-1);
+      var dateCell = row.insertCell(0);
+      var amountCell = row.insertCell(1);
+      var statusCell = row.insertCell(2);
+
+      dateCell.innerHTML = date;
+      amountCell.innerHTML = amount;
+      statusCell.innerHTML = '<button onclick="markDebtPaid(this)">Mark as Paid</button>';
+
+      document.getElementById("debtDateInput").value = "";
+      document.getElementById("debtAmountInput").value = "";
+    }
+
+    function markDebtPaid(button) {
+      var row = button.parentNode.parentNode;
+      row.classList.add("debt-paid");
+      button.parentNode.innerHTML = "Paid";
+    }
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
